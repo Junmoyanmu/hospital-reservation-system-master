@@ -1,0 +1,69 @@
+.navbar-brand .logo {
+    display: inline;
+    width: 1.25em;
+    height: 1.25em;
+    margin-right: 10px;
+}
+
+.navbar ul.navbar-nav li {
+    margin: 10px 15px;
+}
+
+.navbar ul.navbar-nav .glyphicon {
+    vertical-align: middle;
+}
+
+.badge-danger {
+    background-color: #a94442;
+}
+
+/*主容器弹性布局，主轴方向为水平*/
+.main-container {
+    min-height: 120vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.navbar {
+    margin-bottom: 0px;
+    border-radius: 0px;
+}
+
+.side-navbar {
+    flex-grow: 0;
+    min-height: 100vh;
+    background-color: #222222;
+    width: 250px;
+}
+
+/*侧边栏样式*/
+.nav-side li a {
+    display: block;
+    padding: 10px 15px;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+.nav-side li a:hover,
+.nav-side li a:focus {
+    text-decoration: none;
+    background-color: #555555;
+}
+
+.nav-side > ul ul li a {
+    background-color: #777777;
+}
+
+.main-container .content {
+    flex-grow: 1;
+    background-color: #efefef;
+}
+
+.content.container-fluid {
+    margin: 0px;
+    padding: 0px;
+}
+
+.frame-content {
+    min-height: 120vh;
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>查看/修改文章</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <style>
+        body {
+            padding: 15px;
+        }
+        .glyphicon-menu-left {
+            margin-right: 0.5em;
+        }
+        form {
+            margin: 30px 15px;
+        }
+        .form-group {
+            margin-top: 15px;
+        }
+        input[type=text] {
+            margin-left: 15px;
+            margin-right: 50px;
+        }
+        .required {
+            color: #ff0000;
+        }
+        textarea {
+            margin-left: 15px;
+        }
+        .btn-submit {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button class="btn btn-primary" onclick="back()">
+        <span class="glyphicon glyphicon-menu-left"></span>返回
+    </button>
+
+    <form class="form-horizontal" role="form" method="post" action="/admin/article_search.html"
+          th:action="@{/admin/article/modify_submit}">
+        <div class="form-group">
+            <label for="articleTitle" class="control-label col-md-2">
+                标题<span class="required">*</span>
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" name="articleTitle" id="articleTitle" required
+                       th:value="${article.getArticleTitle()}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="articleText" class="control-label col-md-2">
+                文本内容<span class="required">*</span>
+            </label>
+            <div class="col-md-9">
+                <textarea class="form-control" rows="20" name="articleText" id="articleText" required
+                    th:text="${article.getArticleText()}"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="docName" class="control-label col-md-2">
+                医生姓名<span class="required">*</span>
+            </label>
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="docName" id="docName" required
+                    th:value="${article.getDocName()}">
+            </div>
+            <label for="pkDoc" class="control-label col-md-2">
+                医生编号<span class="required">*</span>
+            </label>
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="pkDoc" id="pkDoc" required
+                    th:value="${article.getPkDoc()}">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary col-md-offset-1 col-md-2 btn-submit">确认修改</button>
+    </form>
+
+    <script>
+        // 返回按钮
+        function back() {
+            history.back();
+        }
+    </script>
+</body>
+</html>

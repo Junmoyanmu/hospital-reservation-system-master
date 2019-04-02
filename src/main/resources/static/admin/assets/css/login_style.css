@@ -1,0 +1,35 @@
+body {
+    background: url("../img/login-bg.jpg") no-repeat;
+    background-size: cover;
+}
+
+.container {
+    background-color: #aaaaaa77;
+    margin-top: 50px;
+}
+
+h4.text-center {
+    color: #ffffff;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.container label {
+    color: #ffffff;
+}
+
+.btn-login {
+    margin: 20px 0;
+}
+
+/*通过媒体查询使背景图片适应屏幕*/
+@media screen and (max-width:992px) {
+    body {
+        background-size: auto;
+    }
+}
+
+.error-msg {
+    font-size: 16px;
+    color: #ff0000;
+}

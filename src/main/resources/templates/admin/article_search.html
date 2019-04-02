@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>健康资讯查找</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <style>
+        form {
+            margin: 15px;
+        }
+        input[type=text] {
+            margin-right: 10px;
+        }
+        table {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <form class="form-inline" role="form" method="post" action="/admin/article_search.html"
+        th:action="@{/admin/article/search_submit}">
+        <div class="form-group">
+            <input type="text" name="searchArticle" class="form-control" placeholder="文章标题/医生姓名">
+            <button class="btn-primary form-control">查找文章</button>
+        </div>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>文章编号</th>
+                <th>文章标题</th>
+                <th>创建时间</th>
+                <th>医生编号</th>
+                <th>医生姓名</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+
+        <!--注意使用page分页-->
+
+        <tbody>
+            <tr th:if="${not #lists.isEmpty(articles)}" th:each="art:${articles}">
+                <td th:text="${art.getArticleId()}"></td>
+                <td th:text="${art.getArticleTitle()}"></td>
+                <!--日期格式化-->
+                <td th:text="${#dates.format(art.getArticleTime(), 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${art.getPkDoc()}"></td>
+                <td th:text="${art.getDocName()}"></td>
+                <td>
+                    <!--thymeleaf发送get请求-->
+                    <span><a th:href="@{'/admin/article/modify?articleId=' + ${art.getArticleId()}}">详情</a></span>
+                    <span><a th:href="@{'/admin/article/modify?articleId=' + ${art.getArticleId()}}">修改</a></span>
+                    <span><a href="#">删除</a></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

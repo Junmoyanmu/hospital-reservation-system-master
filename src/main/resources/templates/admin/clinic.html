@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>分诊所管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <style>
+        .btn-add {
+            margin: 10px 15px;
+        }
+        .glyphicon-plus {
+            margin-right: 0.5em;
+        }
+        .required {
+            color: #ff0000;
+        }
+        .modal-text {
+            margin: 1em 3em;
+            font-size: 18px;
+        }
+        .glyphicon-ok {
+            color: #08ce5b;
+            margin-right: 0.5em;
+        }
+        form {
+            margin: 15px;
+        }
+        td > a {
+            cursor: pointer;
+            margin-right: 1em;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn btn-primary btn-add" data-toggle="modal" data-target="#addModal">
+        <span class="glyphicon glyphicon-plus"></span>新增分诊所
+    </button>
+
+    <!--新增分诊所模态框-->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+        <div class="modal-dialog" role="dialog">
+
+            <!--表单-->
+            <form class="form-horizontal" role="form" method="post" id="formAdd"
+                th:action="@{/admin/clinic/add_submit}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="addModalLabel">新增分诊所</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="clinicNumber">
+                                分诊所编号<span class="required">*</span>
+                            </label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="clinicNumber"
+                                       id="clinicNumber" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="clinicName">
+                                分诊所名称<span class="required">*</span>
+                            </label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="clinicName"
+                                       id="clinicName" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="clinicAddress">
+                                分诊所地址<span class="required">*</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="clinicAddress"
+                                       id="clinicAddress" required>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnAddSubmit">确认新增</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--新增分诊所成功弹出框-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="modal-text text-center">
+                        <span class="glyphicon glyphicon-ok"></span>新增分诊所成功！
+                    </p>
+                    <button type="button" class="btn btn-primary center-block" data-dismiss="modal">确认</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>分诊所编号</th>
+            <th>分诊所名称</th>
+            <th>分诊所创建时间</th>
+            <th>分诊所地址</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+            <tr th:if="${not #lists.isEmpty(clinics)}" th:each="cln:${clinics}">
+                <td th:text="${cln.getClinicNumber()}"></td>
+                <td th:text="${cln.getDocClinic()}"></td>
+                <!--日期格式化-->
+                <td th:text="${#dates.format(cln.getClinicTime(), 'yyyy-MM-dd')}"></td>
+                <td th:text="${cln.getClinicAddress()}"></td>
+                <td>
+                    <a class="modify">修改</a>
+                    <a>删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!--修改模态框-->
+    <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="modifyModalLabel">
+        <div class="modal-dialog" role="dialog">
+
+            <!--表单-->
+            <form class="form-horizontal" role="form" method="post" id="formModify"
+                  th:action="@{/admin/clinic/modify_submit}">
+
+                <!--用于传数据的隐藏控件，用来进行数据库检索-->
+                <input type="hidden" name="preNumber" id="preNumber">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modifyModalLabel">修改分诊所信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="clinicNumber2">
+                                分诊所编号<span class="required">*</span>
+                            </label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="clinicNumber2"
+                                       id="clinicNumber2" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="clinicName2">
+                                分诊所名称<span class="required">*</span>
+                            </label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="clinicName2"
+                                       id="clinicName2" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="clinicAddress2">
+                                分诊所地址<span class="required">*</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="clinicAddress2"
+                                       id="clinicAddress2" required>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="modifyAddSubmit">确认修改</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--修改成功弹出框-->
+    <div class="modal fade" id="modifySuccessModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="modal-text text-center">
+                        <span class="glyphicon glyphicon-ok"></span>分诊所信息修改成功！
+                    </p>
+                    <button type="button" class="btn btn-primary center-block" data-dismiss="modal">确认</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+
+
+    <!--使用Modal组件需要引入相关脚本-->
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.js}"></script>
+
+    <script th:inline="javascript">
+
+        // 新增成功，弹出相应模态框
+        var addSuccess  = [[${add_success}]];
+        var modifySuccess = [[${modify_success}]];
+        window.addEventListener("load", function () {
+            if(addSuccess != null) {
+                $('#myModal').modal('show');
+            }
+            if(modifySuccess != null) {
+                $('#modifySuccessModal').modal('show');
+            }
+        }, false);
+
+        // 操作
+        var table = document.getElementById("tbody");
+        table.addEventListener("click", function (e) {
+            // 点击修改，则获取当前记录的每个字段
+            if (e.target.classList.contains("modify"))  {
+                var modify = e.target;
+                var td = modify.parentNode;
+                var rows = table.children;
+                for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].contains(td)) {
+                        var columns = rows[i].children;
+                        var clinicNumber = columns[0].innerHTML;
+                        var clinicName = columns[1].innerHTML;
+                        var clinicAddress = columns[3].innerHTML;
+
+                        var preNumber = document.getElementById("preNumber");
+                        var clinicNumber2 = document.getElementById("clinicNumber2");
+                        var clinicName2 = document.getElementById("clinicName2");
+                        var clinicAddress2 = document.getElementById("clinicAddress2");
+                        preNumber.value = clinicNumber;
+                        clinicNumber2.value = clinicNumber;
+                        clinicName2.value = clinicName;
+                        clinicAddress2.value = clinicAddress;
+
+                        $('#modifyModal').modal('show');
+                    }
+                }
+            }
+        }, false);
+
+    </script>
+
+</body>
+</html>

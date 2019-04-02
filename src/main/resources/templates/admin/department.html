@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>科室管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <style>
+        .btn-add {
+            margin: 10px 15px;
+        }
+        .glyphicon-plus {
+            margin-right: 0.5em;
+        }
+        .required {
+            color: #ff0000;
+        }
+        .modal-text {
+            margin: 1em 3em;
+            font-size: 18px;
+        }
+        .glyphicon-ok {
+            color: #08ce5b;
+            margin-right: 0.5em;
+        }
+        table {
+            margin-left: 20px;
+        }
+
+        td > a {
+            cursor: pointer;
+            margin-right: 1em;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn btn-primary btn-add" data-toggle="modal" data-target="#addModal">
+        <span class="glyphicon glyphicon-plus"></span>新增科室
+    </button>
+
+
+    <!--新增科室模态框-->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+        <div class="modal-dialog" role="dialog">
+
+            <!--表单-->
+            <form class="form-horizontal" role="form" method="post" id="formAdd"
+                  th:action="@{/admin/department/add_submit}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="addModalLabel">新增科室</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="departmentNumber">
+                                科室编号<span class="required">*</span>
+                            </label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="departmentNumber"
+                                       id="departmentNumber" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="departmentName">
+                                科室名称<span class="required">*</span>
+                            </label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="departmentName"
+                                       id="departmentName" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnAddSubmit">确认新增</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--新增科室成功弹出框-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="modal-text text-center">
+                        <span class="glyphicon glyphicon-ok"></span>新增科室成功！
+                    </p>
+                    <button type="button" class="btn btn-primary center-block" data-dismiss="modal">确认</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <!--修改模态框-->
+    <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="modifyModalLabel">
+        <div class="modal-dialog" role="dialog">
+
+            <!--表单-->
+            <form class="form-horizontal" role="form" method="post" id="formModify"
+                  th:action="@{/admin/department/modify_submit}">
+
+                <!--用于传数据的隐藏控件，用来进行数据库检索-->
+                <input type="hidden" name="preNumber" id="preNumber">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modifyModalLabel">修改科室</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="departmentNumber2">
+                                科室编号<span class="required">*</span>
+                            </label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="departmentNumber2"
+                                       id="departmentNumber2" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="departmentName2">
+                                科室名称<span class="required">*</span>
+                            </label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="departmentName2"
+                                       id="departmentName2" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnModifySubmit">确认修改</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--科室修改成功弹出框-->
+    <div class="modal fade" id="modifySuccessModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="modal-text text-center">
+                        <span class="glyphicon glyphicon-ok"></span>科室修改成功！
+                    </p>
+                    <button type="button" class="btn btn-primary center-block" data-dismiss="modal">确认</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>科室序号</th>
+            <th>科室名称</th>
+            <th>科室操作</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        <tr th:if="${not #lists.isEmpty(departments)}" th:each="dept:${departments}">
+            <td th:text="${dept.getDepartmentNumber()}"></td>
+            <td th:text="${dept.getDepartmentName()}"></td>
+            <td>
+                <a href="#" class="doctor" th:text="查看科室医生"></a>
+                <a class="modify" th:text="修改"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!--使用Modal组件需要引入相关脚本-->
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.js}"></script>
+
+    <script th:inline="javascript">
+
+        // 新增/修改成功，弹出相应模态框
+        var addSuccess  = [[${add_success}]];
+        var modifySuccess = [[${modify_success}]];
+        window.addEventListener("load", function () {
+            if(addSuccess != null) {
+                $('#myModal').modal('show');
+            }
+
+            if(modifySuccess != null) {
+                $('#modifySuccessModal').modal('show');
+            }
+        }, false);
+
+
+        // 科室操作
+        var table = document.getElementById("tbody");
+        table.addEventListener("click", function (e) {
+            // 点击修改，则获取当前记录的每个字段
+            if (e.target.classList.contains("modify"))  {
+                var modify = e.target;
+                var td = modify.parentNode;
+                var rows = table.children;
+                for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].contains(td)) {
+                        var columns = rows[i].children;
+                        var deptNumber = columns[0].innerHTML;
+                        var deptName = columns[1].innerHTML;
+
+                        var preNumber = document.getElementById("preNumber");
+                        var deptNumber2 = document.getElementById("departmentNumber2");
+                        var deptName2 = document.getElementById("departmentName2");
+                        preNumber.value = deptNumber;
+                        deptNumber2.value = deptNumber;
+                        deptName2.value = deptName;
+
+                        $('#modifyModal').modal('show');
+                    }
+                }
+            }
+        }, false);
+    </script>
+</body>
+</html>
